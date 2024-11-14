@@ -166,6 +166,20 @@ const Navbar = () => {
           </button>
         </div>
       </div>
+      <div className="border-b border-[#bab9b9]"></div>
+      {/* Text Below Dividers with Flex Layout for Left and Right Text */}
+      <div className="flex justify-between  pl-8 bg-[#F4F5F8] items-center py-4  ">
+        {/* Left Side Text */}
+        <h1 className="text-[#262657] w-[55%]  font-semibold text-[14px] hover:text-[#c1f002] hover:underline cursor-pointer">
+          Tapppp for E-commerce →
+        </h1>
+        {/* Right Side Buttons */}
+        <div className="font-light text-[14px] w-[40%] text-right pr-10  ">
+          <em >Tapppp POS And Online Ordering</em>
+        </div>
+      </div>
+      {/* Divider Below Text */}
+      <div className="border-b border-[#bab9b9]"></div>
     </div>
   );
 };
