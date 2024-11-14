@@ -1,0 +1,58 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+    font-family: "Inter", sans-serif;
+    font-optical-sizing: auto;
+}
+
+/* Default for md and larger devices */
+.card-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+
+/* For small devices */
+@media (max-width: 768px) {
+  .card-container {
+    display: flex;
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+  }
+}
+
+.title {
+  font-size: 1.5em; /* Adjust as needed */
+  margin: 0;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 800;
+  position: relative;
+  display: inline-block;
+  overflow: hidden;
+  white-space: normal; /* Allows multiple lines */
+  background: linear-gradient(to right, #f3f325 50%, #F4F5F8 50%); /* Gradient overlay */
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent; /* Make default text color transparent for gradient */
+  background-size: 200% 100%;
+  background-position: -100% 0; /* Start with white */
+  transition: background-position 1s ease; /* Smooth background transition */
+}
+
+.title:hover {
+  background-position: 0 0; /* Shift gradient to the left */
+}
+
+/* Initial color for spans */
+.title span {
+  color: #CCFF00; /* Set initial color to #CCFF00 */
+}
+
+/* Change span color to white on hover */
+.title:hover span {
+  color: #f3f325; /* Make spans white on hover */
+}
