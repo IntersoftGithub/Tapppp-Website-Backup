@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
 import logo from "../assets/TappppNewLogo.png";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 
 const Navbar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [activeButton, setActiveButton] = useState(""); 
-  const scrollPosition = useRef(0); 
+  const [activeButton, setActiveButton] = useState("");
+  const scrollPosition = useRef(0);
+  const navigate = useNavigate(); // Initialize navigate hook
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
@@ -99,6 +101,12 @@ const Navbar = () => {
             Contact sales
           </button>
           <button
+            onClick={() => navigate("/create-store")} // Redirect to Create Store
+            className="px-4 py-2 ml-4 font-bold hover:bg-[#c1f002] transition bg-[#CCFF00] text-[#262657] rounded-md "
+          >
+            Create Store
+          </button>
+          <button
             onClick={() => (window.location.href = "https://tapppp.com/Login")}
             className="px-4 py-2 ml-4 font-bold hover:bg-[#c1f002] transition bg-[#CCFF00] text-[#262657] rounded-md "
           >
@@ -159,6 +167,12 @@ const Navbar = () => {
             Contact
           </button>
           <button
+            onClick={() => navigate("/create-store")} // Redirect to Create Store
+            className="px-4 py-2 text-[22px] font-bold  hover:bg-[#c1f002] transition bg-[#CCFF00] text-[#262657] rounded-md"
+          >
+            Create Store
+          </button>
+          <button
             onClick={() => (window.location.href = "https://tapppp.com/Login")}
             className="px-4 py-2 text-[22px] font-bold  hover:bg-[#c1f002] transition bg-[#CCFF00] text-[#262657] rounded-md"
           >
@@ -175,7 +189,7 @@ const Navbar = () => {
         </h1>
         {/* Right Side Buttons */}
         <div className="font-light text-[14px] w-[40%] text-right pr-10  ">
-          <em >Tapppp POS And Online Ordering</em>
+          <em>Tapppp POS And Online Ordering</em>
         </div>
       </div>
       {/* Divider Below Text */}
