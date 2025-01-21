@@ -1,20 +1,23 @@
 import React, { useState, useEffect } from "react";
-import img1 from "../assets/blue.jpg";
-import img2 from "../assets/download.jpg";
-import img3 from "../assets/maxresdefault.jpg";
+import img1 from "../assets/delights.jpg";
+import img2 from "../assets/file1.png";
+import img3 from "../assets/kiswalogo.png";
 import logo from "../assets/TappppNewLogo.png";
 import { useNavigate } from "react-router-dom";
 import { addStore, checkDomainAvailability } from "../ApiHandler/Handler";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css"; // Import styles for toast
 
 const BusinessStoreForm = () => {
   const [step, setStep] = useState(1); // State to track the current step
   const [isSubmitted, setIsSubmitted] = useState(false); // State to track submission
   const [alert, setAlert] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false); // Tracks button state
 
   const [formData, setFormData] = useState({
     name: "",
     address: "",
-    city: "karachi",
+    city: "",
     phone: "",
     cnic: "",
     email: "",
@@ -32,20 +35,40 @@ const BusinessStoreForm = () => {
   useEffect(() => {
     const fetchCities = async () => {
       try {
-        const response = await fetch("https://oms.orio.tech/api/cities", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Accept: "*/*",
-          },
-          body: JSON.stringify({ country_id: 1 }),
-        });
-        const data = await response.json();
-        const validCities = data.filter(
-          (city) =>
-            city?.city_name && city?.id && city?.country_id && city?.province_id
-        );
-        setCities(validCities);
+        // Check if cities data is already in localStorage
+        const cachedCities = localStorage.getItem("cities");
+
+        if (cachedCities) {
+          // Parse and set the cached data
+          setCities(JSON.parse(cachedCities));
+        } else {
+          // Fetch data from the API if not available in localStorage
+          const response = await fetch("https://oms.getorio.com/api/cities", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Accept: "*/*",
+            },
+            body: JSON.stringify({ country_id: 1 }),
+          });
+
+          const data = await response.json();
+
+          // Filter valid cities
+          const validCities = data.filter(
+            (city) =>
+              city?.city_name &&
+              city?.id &&
+              city?.country_id &&
+              city?.province_id
+          );
+
+          // Save the valid cities to localStorage
+          localStorage.setItem("cities", JSON.stringify(validCities));
+
+          // Update the state
+          setCities(validCities);
+        }
       } catch (error) {
         console.error("Error fetching cities:", error);
       }
@@ -53,6 +76,7 @@ const BusinessStoreForm = () => {
 
     fetchCities();
   }, []);
+
   const validateFields = () => {
     let validationErrors = {};
 
@@ -102,16 +126,71 @@ const BusinessStoreForm = () => {
     return Object.keys(validationErrors).length === 0;
   };
 
-  const handleDomainChecker = async (event) => {
-    const value = event.target.value;
-    setFormData({ ...formData, domainName: value });
+  // const handleDomainChecker = async (event) => {
+  //   let value = event.target.value;
 
-    if (value.trim()) {
-      const domainName = `${value}.tapppp.com`;
-      const data = await checkDomainAvailability(domainName);
-      setAlert(data.alert);
+  //   // Convert the domain name to lowercase by default
+  //   value = value.toLowerCase();
+
+  //   // Regex to allow only alphabetic characters and dots
+  //   const regex = /^[a-z.]*$/;
+
+  //   // If the input matches the regex, update the form data
+  //   if (regex.test(value) || value === "") {
+  //     setFormData({ ...formData, domainName: value });
+
+  //     if (value.trim()) {
+  //       const domainName = `${value}.tapppp.com`;
+  //       const data = await checkDomainAvailability(domainName);
+  //       setAlert(data.alert);
+  //     } else {
+  //       setAlert(null);
+  //     }
+  //   } else {
+  //     // If the input doesn't match, set the domain name to the previous valid value
+  //     setFormData({ ...formData, domainName: formData.domainName });
+  //   }
+  // };
+  const handleDomainChecker = async (event) => {
+    let value = event.target.value.toLowerCase();
+
+    // Allow only alphabetic characters and dots
+    const regex = /^[a-z.]*$/;
+    if (regex.test(value) || value === "") {
+      setFormData({ ...formData, domainName: value });
+
+      if (value.trim()) {
+        const domainName = `${value}.tapppp.com`;
+
+        try {
+          const data = await checkDomainAvailability(domainName);
+
+          if (data.alert === "Exist") {
+            setErrors((prevErrors) => ({
+              ...prevErrors,
+              domainName: "Domain already exists",
+            }));
+          } else {
+            setErrors((prevErrors) => ({
+              ...prevErrors,
+              domainName: "",
+            }));
+          }
+
+          setAlert(data.alert);
+        } catch (error) {
+          console.error("Error checking domain availability:", error);
+        }
+      } else {
+        setAlert(null);
+        setErrors((prevErrors) => ({
+          ...prevErrors,
+          domainName: "",
+        }));
+      }
     } else {
-      setAlert(null);
+      // Revert to the previous valid domain name
+      setFormData({ ...formData, domainName: formData.domainName });
     }
   };
 
@@ -126,11 +205,26 @@ const BusinessStoreForm = () => {
       if (imageInput && imageInput.files.length > 0) {
         const file = imageInput.files[0];
         try {
+          setIsSubmitting(true); // Disable button
           const base64Image = await convertToBase64(file);
+
+          // Find the selected city details
+          const cityDetails = cities.find(
+            (city) => city.city_name === formData.city
+          );
+
+          if (!cityDetails) {
+            toast.error("Selected city is invalid.");
+            return;
+          }
+
           const transformedData = {
             OwnerName: formData.name,
             StoreLocation: formData.address,
-            StoreCity: formData.city,
+            StoreCity: cityDetails.city_name,
+            cityid: cityDetails.id,
+            countryid: cityDetails.country_id,
+            provinceid: cityDetails.province_id,
             StoreContact: formData.phone,
             OwnerCnic: formData.cnic,
             OwnerEmail: formData.email,
@@ -141,25 +235,42 @@ const BusinessStoreForm = () => {
             PickupAddress: formData.pickupAddress,
             StoreImg: base64Image,
           };
-
+          console.log(transformedData);
           const response = await addStore(transformedData);
+
           if (response) {
-            console.log("Store created successfully:", response);
+            const { userName, userPassword, StoreLink } = response;
+            const formattedResponse = {
+              userName,
+              userPassword,
+              StoreLink: StoreLink || transformedData.StoreLink,
+            };
+
+            toast.success("Store created successfully!");
             setIsSubmitted(true);
+
+            const responseText = JSON.stringify(formattedResponse, null, 2);
+            downloadAsTextFile("store_creation_response.txt", responseText);
           }
         } catch (error) {
+          toast.error("Error submitting form. Please try again.");
           console.error("Error submitting form:", error);
+        } finally {
+          setIsSubmitting(false); // Re-enable button
         }
       }
     }
   };
 
-  const handleCityChange = (city) => {
-    setSelectedCity(city.city_name);
-    setFormData((prev) => ({ ...prev, city: city.city_name }));
-    setErrors((prev) => ({ ...prev, city: "" })); // Clear errors for city
-    setIsAccordionOpen(false);
-    setSearchTerm(""); // Clear search term after selection
+  // Utility to download text as a file
+  const downloadAsTextFile = (filename, textContent) => {
+    const element = document.createElement("a");
+    const file = new Blob([textContent], { type: "text/plain" });
+    element.href = URL.createObjectURL(file);
+    element.download = filename;
+    document.body.appendChild(element); // Required for Firefox
+    element.click();
+    document.body.removeChild(element);
   };
 
   const filteredCities = cities.filter((city) =>
@@ -403,7 +514,7 @@ const BusinessStoreForm = () => {
                     value={formData[field]}
                     onChange={handleInputChange}
                     placeholder="Input text"
-                    className={`w-full text-[12px] bg-[#ffffff] border ${
+                    className={`w-full text-[16px] bg-[#ffffff] border ${
                       errors[field] ? "border-red-500" : "border-gray-300"
                     } rounded-lg px-[10px] py-[7px] focus:outline-none focus:ring-2 ${
                       errors[field]
@@ -434,7 +545,7 @@ const BusinessStoreForm = () => {
                     value={formData.phone}
                     onChange={handleInputChange}
                     placeholder="Enter phone number"
-                    className={`w-full text-[12px] bg-[#ffffff] border ${
+                    className={`w-full text-[16px] bg-[#ffffff] border ${
                       errors.phone ? "border-red-500" : "border-gray-300"
                     } rounded-lg px-[10px] py-[7px] focus:outline-none focus:ring-2 ${
                       errors.phone
@@ -458,7 +569,7 @@ const BusinessStoreForm = () => {
                     <input
                       type="text"
                       id="city"
-                      className="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-[12px] px-[10px] py-[7px]"
+                      className="w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500 text-[16px] px-[10px] py-[7px]"
                       placeholder="Type or select a city"
                       value={searchTerm} // Always show the current search term
                       onChange={(e) => {
@@ -510,7 +621,7 @@ const BusinessStoreForm = () => {
                   <div key={field} className="flex-1 ">
                     <label
                       htmlFor={field}
-                      className="block text-[13px] mb-1 font-medium"
+                      className="block text-[16px] mb-1 font-medium"
                     >
                       {field.charAt(0).toUpperCase() + field.slice(1)}
                       {errors[field] && (
@@ -523,7 +634,7 @@ const BusinessStoreForm = () => {
                       value={formData[field]}
                       onChange={handleInputChange}
                       placeholder="Input text"
-                      className={`w-full text-[12px] bg-[#ffffff] border ${
+                      className={`w-full text-[16px] bg-[#ffffff] border ${
                         errors[field] ? "border-red-500" : "border-gray-300"
                       } rounded-lg px-[10px] py-[7px] focus:outline-none focus:ring-2 ${
                         errors[field]
@@ -542,7 +653,7 @@ const BusinessStoreForm = () => {
               <div>
                 <label
                   htmlFor="imageInput"
-                  className="block mb-1 text-[13px] font-medium"
+                  className="block mb-1 text-[16px] font-medium"
                 >
                   Upload Image
                   {errors.imageInput && (
@@ -553,7 +664,7 @@ const BusinessStoreForm = () => {
                   type="file"
                   id="imageInput"
                   accept="image/*"
-                  className={`w-full bg-[#ffffff] text-[12px] border ${
+                  className={`w-full bg-[#ffffff] text-[16px] border ${
                     errors.imageInput ? "border-red-500" : "border-gray-300"
                   } rounded-lg px-[10px] focus:outline-none focus:ring-2 ${
                     errors.imageInput
@@ -578,7 +689,7 @@ const BusinessStoreForm = () => {
                     value={formData.domainName}
                     onChange={handleDomainChecker}
                     placeholder="Input text"
-                    className={`w-full bg-[#ffffff] text-[12px] border ${
+                    className={`w-full bg-[#ffffff] text-[16px] border ${
                       errors.domainName ? "border-red-500" : "border-gray-300"
                     } rounded-lg px-[10px] py-[7px] focus:outline-none focus:ring-2 focus:ring-blue-500`}
                   />
@@ -616,7 +727,7 @@ const BusinessStoreForm = () => {
                   value={formData.businessName}
                   onChange={handleInputChange}
                   placeholder="Input text"
-                  className={`w-full bg-[#ffffff] text-[12px] border ${
+                  className={`w-full bg-[#ffffff] text-[16px] border ${
                     errors.businessName ? "border-red-500" : "border-gray-300"
                   } rounded-lg px-[10px] py-[7px] focus:outline-none focus:ring-2 focus:ring-blue-500`}
                 />
@@ -636,7 +747,7 @@ const BusinessStoreForm = () => {
                   value={formData.pickupAddress}
                   onChange={handleInputChange}
                   placeholder="Input text"
-                  className={`w-full bg-[#ffffff] text-[12px] border ${
+                  className={`w-full bg-[#ffffff] text-[16px] border ${
                     errors.pickupAddress ? "border-red-500" : "border-gray-300"
                   } rounded-lg px-[10px] py-[7px] focus:outline-none focus:ring-2 focus:ring-blue-500`}
                 />
@@ -656,9 +767,12 @@ const BusinessStoreForm = () => {
             <button
               type="button"
               onClick={step === 2 ? handleSubmit : handleNext}
-              className="bg-[#ccff00]  small:text-[12px] xsmall:text-[14px] text-black px-8 py-2 rounded-lg hover:bg-lime-600"
+              disabled={isSubmitting} // Disable when submitting
+              className={`bg-[#ccff00] small:text-[12px] xsmall:text-[14px] text-black px-8 py-2 rounded-lg hover:bg-lime-600 ${
+                isSubmitting ? "opacity-50 cursor-not-allowed" : ""
+              }`}
             >
-              {step === 1 ? "Next" : "Submit"}
+              {isSubmitting ? "Submitting..." : step === 1 ? "Next" : "Submit"}
             </button>
           </div>
         </form>
@@ -767,6 +881,15 @@ const BusinessStoreForm = () => {
           </div>
         )}
       </div>
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        closeOnClick
+        pauseOnHover
+        draggable
+        theme="colored"
+      />
     </div>
   );
 };

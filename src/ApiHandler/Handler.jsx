@@ -1,4 +1,4 @@
-const BASE_URL = "https://tappppapi.il-solution.com/api";
+const BASE_URL = "https://api.tapppp.com/api";
 
 export const checkDomainAvailability = async (domainName) => {
   try {
@@ -39,6 +39,3 @@ export const addStore = async (storeData) => {
     return null;
   }
 };
-
-
-

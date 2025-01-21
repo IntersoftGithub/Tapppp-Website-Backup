@@ -13,7 +13,7 @@ const Overview = () => {
     <div className="bg-[#F4F5F8]">
       <div className="small:flex flex-col small:py-[2rem] ssmd:py-[9rem] gap-2 md:py-[9rem] smd:py-[9rem] smd:flex-row-reverse ssmd:flex-row-reverse md:flex-row-reverse justify-center items-center small:max-w-screen-xl smd:max-w-screen-xl ssmd:max-w-screen-xl md:max-w-screen-xl smd:px-[6rem] small:px-[2rem] ssmd:px-[3rem] md:px-[6rem] mx-auto p-4 md:p-8 ssmd:p-8 small:p-0 smd:p-8 space-y-4 smd:space-y-0 md:space-y-0">
         {/* Text Content */}
-        <div className="md:w-1/2 small:w-full ssmd:w-1/2 smd:w-1/2 text-center ssmd:text-left small:text-left smd:text-left md:text-left md:mr-5 order-1 ssmd:order-2">
+        <div className=" md:w-1/2 small:w-full ssmd:w-1/2 smd:w-1/2 text-center ssmd:text-left small:text-left smd:text-left md:text-left md:mr-5 order-1 ssmd:order-2">
           <h1 className="md:text-6xl ssmd:text-4xl smd:text-5xl small:text-4xl font-extrabold pb-3 text-[#262657] leading-[4rem] fade-in-delay-1">
             Doing Business, <br />
             <span className="text-[#262657]">Has Just Got</span>
@@ -69,9 +69,9 @@ const Overview = () => {
       </div>
       <div
         id="Features-section"
-        class="flex justify-center small:pt-[5rem] ssmd:pt-[9rem]"
+        className="flex justify-center small:pt-[5rem] ssmd:pt-[9rem]"
       >
-        <div class="md:max-w-screen-xl small:max-w-screen-xl ssmd:max-w-screen-xl smd:max-w-screen-xl">
+        <div className="md:max-w-screen-xl small:max-w-screen-xl ssmd:max-w-screen-xl smd:max-w-screen-xl">
           <div className=" items-center justify-between ssmd:px-[3rem] small:px-[2rem] smd:px-[6rem] md:px-[6rem]">
             <h2 className="md:text-[48px] smd:text-[48px] small:text-[30px] small:leading-[2rem] ssmd:text-[36px] ssmd:leading-[3rem]   smd:leading-[3.2rem] font-bold mb-4 text-left text-[#262657]">
               All business dimensions covered. <br />
@@ -82,93 +82,93 @@ const Overview = () => {
             </p>
           </div>
 
-          <div class="grid xxsmall:grid-cols-2 ssmd:grid-cols-2 md:grid-cols-2 small:px-[2rem] smd:px-[6rem] ssmd:px-[3rem] md:px-[6rem] gap-6 md:gap-12 ssmd:gap-12  ">
-            <div class="bg-white overflow-hidden ssmd:rounded-[35px] small:rounded-[15px]  ">
+          <div className="grid xxsmall:grid-cols-2 ssmd:grid-cols-2 md:grid-cols-2 small:px-[2rem] smd:px-[6rem] ssmd:px-[3rem] md:px-[6rem] gap-6 md:gap-12 ssmd:gap-12  ">
+            <div className="bg-white overflow-hidden ssmd:rounded-[35px] small:rounded-[15px]  ">
               <img
                 src={courierImg}
                 alt="Workflow"
-                class="w-full xsmall:h-[250px] ssmd:h-[250px] small:h-[180px] object-cover "
+                className="w-full xsmall:h-[250px] ssmd:h-[250px] small:h-[180px] object-cover "
               />
-              <div class="ssmd:p-6 ssmd:pb-8 small:p-4 small:pb-4">
-                <h3 class="ssmd:text-xl xsmall:text-xl font-bold mb-2">
+              <div className="ssmd:p-6 ssmd:pb-8 small:p-4 small:pb-4">
+                <h3 className="ssmd:text-xl xsmall:text-xl font-bold mb-2">
                   Build Your Online Store
                 </h3>
-                <p class="text-gray-700 small:text-[12px] xsmall:text-[14px] ssmd:text-[16px] mb-4">
+                <p className="text-gray-700 small:text-[12px] xsmall:text-[14px] ssmd:text-[16px] mb-4">
                   Sell in-person, online, or from anywhere. Take secure payments
                   from customers, clients, and more.
                 </p>
                 <a
                   href="#"
-                  class="text-[#859e23] xsmall:text-[16px] ssmd:text-[16px] small:text-[12px] font-medium "
+                  className="text-[#859e23] xsmall:text-[16px] ssmd:text-[16px] small:text-[12px] font-medium "
                 >
                   See Ecommerce solutions &rarr;
                 </a>
               </div>
             </div>
 
-            <div class="bg-white overflow-hidden ssmd:rounded-[35px] small:rounded-[15px]  ">
+            <div className="bg-white overflow-hidden ssmd:rounded-[35px] small:rounded-[15px]  ">
               <img
                 src={ecommerceImg}
                 alt="Intelligence"
-                class="w-full xsmall:h-[250px] ssmd:h-[250px] small:h-[180px] object-cover "
+                className="w-full xsmall:h-[250px] ssmd:h-[250px] small:h-[180px] object-cover "
               />
-              <div class="ssmd:p-6 ssmd:pb-8 small:p-4 small:pb-4">
-                <h3 class="ssmd:text-xl xsmall:text-xl font-bold mb-2">
+              <div className="ssmd:p-6 ssmd:pb-8 small:p-4 small:pb-4">
+                <h3 className="ssmd:text-xl xsmall:text-xl font-bold mb-2">
                   Courier And Deliveries
                 </h3>
-                <p class="text-gray-700 small:text-[12px] xsmall:text-[14px] ssmd:text-[16px] mb-4">
+                <p className="text-gray-700 small:text-[12px] xsmall:text-[14px] ssmd:text-[16px] mb-4">
                   Tapppp has partnered with major cash-on-delivery as well as
                   on-demand delivery partners in Pakistan.
                 </p>
                 <a
                   href="#"
-                  class="text-[#859e23] xsmall:text-[16px] ssmd:text-[16px] small:text-[12px] font-medium "
+                  className="text-[#859e23] xsmall:text-[16px] ssmd:text-[16px] small:text-[12px] font-medium "
                 >
                   See delivery solutions &rarr;
                 </a>
               </div>
             </div>
 
-            <div class="bg-white overflow-hidden ssmd:rounded-[35px] small:rounded-[15px]  ">
+            <div className="bg-white overflow-hidden ssmd:rounded-[35px] small:rounded-[15px]  ">
               <img
                 src={dataInsightsImg}
                 alt="Security"
-                class="w-full xsmall:h-[250px] ssmd:h-[250px] small:h-[180px] object-cover object-bottom "
+                className="w-full xsmall:h-[250px] ssmd:h-[250px] small:h-[180px] object-cover object-bottom "
               />
-              <div class="ssmd:p-6 ssmd:pb-8 small:p-4 small:pb-4">
-                <h3 class="ssmd:text-xl xsmall:text-xl font-bold mb-2">
+              <div className="ssmd:p-6 ssmd:pb-8 small:p-4 small:pb-4">
+                <h3 className="ssmd:text-xl xsmall:text-xl font-bold mb-2">
                   Promotional Marketing
                 </h3>
-                <p class="text-gray-700 small:text-[12px] xsmall:text-[14px] ssmd:text-[16px] mb-4">
+                <p className="text-gray-700 small:text-[12px] xsmall:text-[14px] ssmd:text-[16px] mb-4">
                   Tapppp provides you direct marketing options to your customers
                   through whatsapp integration
                 </p>
                 <a
                   href="#"
-                  class="text-[#859e23] xsmall:text-[16px] ssmd:text-[16px] small:text-[12px] font-medium "
+                  className="text-[#859e23] xsmall:text-[16px] ssmd:text-[16px] small:text-[12px] font-medium "
                 >
                   See marketing solutions &rarr;
                 </a>
               </div>
             </div>
 
-            <div class="bg-white overflow-hidden ssmd:rounded-[35px] small:rounded-[15px]  ">
+            <div className="bg-white overflow-hidden ssmd:rounded-[35px] small:rounded-[15px]  ">
               <img
                 src={promoImg}
                 alt="Customization"
-                class="w-full xsmall:h-[250px] ssmd:h-[250px] small:h-[180px] object-cover object-bottom "
+                className="w-full xsmall:h-[250px] ssmd:h-[250px] small:h-[180px] object-cover object-bottom "
               />
-              <div class="ssmd:p-6 ssmd:pb-8 small:p-4 small:pb-4">
-                <h3 class="ssmd:text-xl xsmall:text-xl font-bold mb-2">
+              <div className="ssmd:p-6 ssmd:pb-8 small:p-4 small:pb-4">
+                <h3 className="ssmd:text-xl xsmall:text-xl font-bold mb-2">
                   Data Insights
                 </h3>
-                <p class="text-gray-700 small:text-[12px] xsmall:text-[14px] ssmd:text-[16px] mb-4">
+                <p className="text-gray-700 small:text-[12px] xsmall:text-[14px] ssmd:text-[16px] mb-4">
                   Tapppp provides you with complete sales analytics as well as
                   customers data on your fingertips
                 </p>
                 <a
                   href="#"
-                  class="text-[#859e23] xsmall:text-[16px] ssmd:text-[16px] small:text-[12px] font-medium "
+                  className="text-[#859e23] xsmall:text-[16px] ssmd:text-[16px] small:text-[12px] font-medium "
                 >
                   See data insight solutions &rarr;
                 </a>
@@ -178,10 +178,10 @@ const Overview = () => {
         </div>
       </div>
 
-      <div class="flex justify-center small:py-[4rem] ssmd:py-[9rem]">
+      <div className="flex justify-center small:py-[4rem] ssmd:py-[9rem]">
         {" "}
         {/* Match the max-width and padding */}
-        <div class="md:max-w-screen-xl small:max-w-screen-xl smd:max-w-screen-xl ssmd:max-w-screen-xl smd:px-[6rem]  small:px-[2rem] ssmd:px-[3rem] md:px-[6rem] w-full">
+        <div className="md:max-w-screen-xl small:max-w-screen-xl smd:max-w-screen-xl ssmd:max-w-screen-xl smd:px-[6rem]  small:px-[2rem] ssmd:px-[3rem] md:px-[6rem] w-full">
           <div className="text-center  ">
             <h2 className="md:text-[48px] smd:text-[48px] small:text-[30px] ssmd:text-[36px] smd:leading-[3.2rem] ssmd:leading-[2.8rem] font-bold mb-4 text-left text-[#262657]">
               Keep building your business. <br />
